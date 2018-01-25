@@ -7,46 +7,46 @@ public class Deck {
 	private ArrayList<Card> Undealt;
 	//an arrayList we will use to hold cards we have already seen, so we can shuffle them back in.
 	private ArrayList<Card> Dealt;
+	//Creates New Cards and adds it to Undealt
 	public Deck(String[] rank, String[] suit, int[] pointValue) {
+		ArrayList<Card> cards = new ArrayList<>();
+		Dealt = new ArrayList<>();
 		for (int i = 0 ; i < rank.length;i++)
 		{
 			for (int j = 0; j < suit.length;j++)
 			{
-				for (int z = 0; z < pointValue.length;z++)
-				{
-					Card newdeck = new Card(rank[i], suit[j], pointValue[z]);
-					Undealt.add(newdeck);
-				}
+				cards.add(new Card(rank[i], suit[j], pointValue[i])) ;
 			}
 		}
+		this.Undealt = cards;
 	}
+	//returns true if the size of the undealt pile is 0
 	public boolean isEmpty()
 	{
 		return Undealt.size() == 0;
 	} 
+	//return the size of the undealt pile
 	public int size ()
 	{
 		return Undealt.size();
 	}
+	//Deals the cards by removing the top card from the undealt and adding it to the dealt
 	public Card deal()
 	{
-		Card i = Undealt.get((int)(Math.random() * Undealt.size()));
+		Card i = this.Undealt.remove(this.size()-1);
 		Dealt.add(i);
 		return i;
 	}
+	//Switches index card at index of i with card at index of j
+	private void swap(int i, int j) {
+		Card x = Undealt.get(i);
+		Undealt.set(i, Undealt.get(j));
+		Undealt.set(j, x);
+	}
 	public void shuffle()
 	{
-		while(Dealt.size() > 0)		
-		{
-			 Undealt.add(Dealt.get(0));
-			 Dealt.remove(0);
-		}
-		for(int k = 51; k > 0; k++)
-		{
-			 int i = (int)(Math.random()*k);
-			 Card x = Dealt.get(k);
-			 Dealt.set(k,Dealt.get(i));
-			 Dealt.set(i,x);
+		for (int k = 51; k > 0; k--) {
+			swap(k, (int) (Math.random() * (k+1)));
 		}
 	}
 }
